@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js">
+</script>
+<body>
+    <div ng-app="app01" ng-controller="controlleur01">
+        <p>Give a color: <input type="text" ng-model="color" style="background-color: {{color}}"></p>
+        <p>{{ color }}</p>
+        <input ng-model="nb1" type="text"/>
+        <input ng-model="nb2" type="text"/>
+        <select ng-model="operateur" value="*">
+            <option value="*" selected >*</option>
+            <option value="/">/</option>
+            <option value="+">+</option>
+            <option value="-">-</option>
+        </select>
+
+        <div>{{ nb1 }} {{ operateur }} {{ nb2 }} = {{ calcul(nb1, nb2, operateur)}}</div>
+
+        <ul>
+            <li ng-repeat="x in pokemons">
+                {{ x.jname }}
+            </li>
+        </ul>
+    </div>
+    <script>
+      var app = angular.module("app01", []);
+      app.controller("controlleur01", function($scope){
+        $scope.calcul = function(nb1, nb2, operateur){
+          var nb1int = parseInt(nb1);
+          var nb2int = parseInt(nb2);
+          var resultat=0;
+
+          switch (operateur) {
+            case "/" :
+              resultat = nb1int/nb2int;
+              break;
+            case "*" :
+              resultat = nb1int*nb2int;
+              break;
+            case "+":
+              resultat = nb1int+nb2int;
+              break;
+            case "-":
+              resultat = nb1int-nb2int;
+              break;
+            default :
+              resultat = 0;
+              break;
+          }
+
+          return parseInt(resultat) };
+      });
+      app.controller("controlleur01", function($scope, $http){
+        $http.get("https://raw.githubusercontent.com/fanzeyi/Pokemon-DB/master/pokedex.json").then(function(response){
+            $scope.pokemons = response.data
+        });
+      });
+    </script>
+</body>
+</html>
